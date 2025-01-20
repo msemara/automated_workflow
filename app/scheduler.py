@@ -1,7 +1,7 @@
 ##################################################################
 #                                                                #
 #                                                                #
-#                          database.py                           #
+#                          scheduler.py                          #
 #                                                                #
 #                                                                #
 ##################################################################
@@ -11,15 +11,14 @@
 # 01-19-2025  MEMA Creation
 
 
-# This file handles the database connection and setup.
-
+# This file sets up APScheduler for recurring tasks
 #----------------------------------------------------------------#
-from sqlalchemy import create_engine, Column, Integer, String, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
 
-DATABASE_URL = "sqlite:///./test.db"  # Use "postgresql://user:password@localhost/dbname" for PostgreSQL
+def print_job():
+    print(f"Job executed at {datetime.now()}")
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+scheduler = BackgroundScheduler()
+scheduler.add_job(print_job, "interval", seconds=30)
+scheduler.start()
