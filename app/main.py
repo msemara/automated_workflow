@@ -15,7 +15,7 @@
 #----------------------------------------------------------------#
 from fastapi import FastAPI
 from app.database import Base, engine
-from app.routers import tasks
+from app.routers import tasks, workflows, logs
 from app.scheduler import scheduler  # Import the scheduler
 
 app = FastAPI()
@@ -25,6 +25,8 @@ Base.metadata.create_all(bind=engine)
 
 # Include API routes
 app.include_router(tasks.router, prefix="/api/v1", tags=["tasks"])
+app.include_router(workflows.router, prefix="/api/v1", tags=["workflows"])
+app.include_router(logs.router, prefix="/api/v1", tags=["logs"])
 
 # Scheduler is already running in the background
 @app.get("/")
